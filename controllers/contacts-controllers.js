@@ -9,15 +9,12 @@ const getAllContacts = async (req, res) => {
   const { page = 1, limit = 10, favorite = false } = req.query;
 
   const skip = (page - 1) * limit;
+  const query = favorite === undefined ? { owner } : { owner, favorite };
 
-  const result = await Contact.find(
-    { owner, favorite },
-    "-createdAt -updatedAt",
-    {
-      skip,
-      limit,
-    }
-  ).populate("owner", "name email");
+  const result = await Contact.find(query, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "name email");
 
   res.json(result);
 };
