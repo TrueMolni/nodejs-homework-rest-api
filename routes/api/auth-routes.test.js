@@ -53,6 +53,9 @@ describe("test /api/auth/register route", () => {
 
     const res = await request(app).post("/api/auth/login").send(loginData);
     expect(res.statusCode).toBe(200);
+
+    const user = await User.findOne({ email: loginData.email });
+    expect(user.token).toBe(res.body.token);
     //   expect(res.body.email).toBe(loginData.email);
   });
 });
